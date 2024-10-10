@@ -42,7 +42,34 @@ func loadFiles() (rootFile File) {
 // doCommand выполняет команду cmd с аргументом arg (может быть пустым) над текущим файлом currentFile
 // Возвращает назад сообщение о результате result (может быть пустым) и текущий после выполнения команды файл newCurrentFile
 func doCommand(cmd, arg string, currentFile File) (result string, newCurrentFile File) {
-	return // TODO реализовать выполнение команд
+	switch {
+	case cmd == "cd" && arg == "":
+		return "", currentFile
+	case cmd == "cd" && arg == "..":
+		return "", loadFiles()
+	case cmd == "cd":
+		return "", loadFiles()
+	case (cmd == "exit" || cmd == "quit") && arg == "":
+		os.Exit(0)
+		return "", loadFiles()
+	case cmd == "ls" && arg == "":
+		return "", currentFile
+	case cmd == "pwd" && arg == "":
+		return "", currentFile
+	default:
+		return "Неизвестная команда: " + cmd, currentFile
+	}
+	// TODO реализовать выполнение команд
+	/*| Команда | Аргумент       | Описание                                                                        |
+	|---------|----------------|---------------------------------------------------------------------------------|
+	| `cd`    | нет            | Переключение текущей директории. Без аргумента ничего не делает                 |
+	| `cd`    | `..`           | Переключение текущей директории на родительскую                                 |
+	| `cd`    | имя директории | Переключение текущей директории на вложенную, соответствующую переданному имени |
+	| `exit`  | нет            | Выход из системы                                                                |
+	| `ls`    | нет            | Вывод списка вложенных файлов и директорий                                      |
+	| `pwd`   | нет            | Вывод полного пути текущей директории, начиная от корневой                      |
+	| `quit`  | нет            | то же, что и `exit`
+	*/
 }
 
 // readCommand читает пользовательский ввод через reader
